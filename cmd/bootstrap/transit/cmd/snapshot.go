@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
 
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go/engine/common/rpc/convert"
 	"github.com/onflow/flow-go/model/bootstrap"
 	"github.com/onflow/flow-go/model/flow"
@@ -51,7 +51,7 @@ func snapshot(cmd *cobra.Command, args []string) {
 	}
 
 	// create a flow client with given access address
-	flowClient, err := client.New(flagAccessAddress, grpc.WithInsecure()) //nolint:staticcheck
+	flowClient, err := sdkGrpc.NewClient(flagAccessAddress)
 	if err != nil {
 		log.Fatal().Err(err).Msg("could not create flow client")
 	}
