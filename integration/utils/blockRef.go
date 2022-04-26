@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"github.com/onflow/flow-go-sdk/access"
 	"sync"
 	"time"
 
@@ -13,13 +14,13 @@ const maxAge = 5 * time.Second
 
 // BlockRef stores information about the block reference to allow cached fetching
 type BlockRef struct {
-	c              *client.Client
+	c              access.Client
 	cachedBlockRef flowsdk.Identifier
 	validUntil     time.Time
 	mux            sync.Mutex
 }
 
-func NewBlockRef(c *client.Client) BlockRef {
+func NewBlockRef(c access.Client) BlockRef {
 	return BlockRef{
 		c: c,
 	}

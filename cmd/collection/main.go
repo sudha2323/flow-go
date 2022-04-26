@@ -532,7 +532,7 @@ func main() {
 }
 
 // createQCContractClient creates QC contract client
-func createQCContractClient(node *cmd.NodeConfig, machineAccountInfo *bootstrap.NodeMachineAccountInfo, flowClient *access.Client, anID flow.Identifier) (module.QCContractClient, error) {
+func createQCContractClient(node *cmd.NodeConfig, machineAccountInfo *bootstrap.NodeMachineAccountInfo, flowClient access.Client, anID flow.Identifier) (module.QCContractClient, error) {
 
 	var qcContractClient module.QCContractClient
 
