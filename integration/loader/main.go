@@ -10,14 +10,13 @@ import (
 	"time"
 
 	flowsdk "github.com/onflow/flow-go-sdk"
-	"github.com/rs/zerolog"
-	"google.golang.org/grpc"
-
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go/crypto"
 	"github.com/onflow/flow-go/integration/utils"
 	"github.com/onflow/flow-go/model/flow"
 	"github.com/onflow/flow-go/module/metrics"
 	"github.com/onflow/flow-go/utils/unittest"
+	"github.com/rs/zerolog"
 )
 
 type LoadCase struct {
@@ -91,7 +90,7 @@ func main() {
 	}
 
 	loadedAccessAddr := accessNodeAddrs[0]
-	flowClient, err := client.New(loadedAccessAddr, grpc.WithInsecure()) //nolint:staticcheck
+	flowClient, err := sdkGrpc.NewClient(loadedAccessAddr)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("unable to initialize Flow client")
 	}
@@ -100,7 +99,7 @@ func main() {
 	if len(accessNodeAddrs) > 1 {
 		supervisorAccessAddr = accessNodeAddrs[1]
 	}
-	supervisorClient, err := client.New(supervisorAccessAddr, grpc.WithInsecure()) //nolint:staticcheck
+	supervisorClient, err := sdkGrpc.NewClient(supervisorAccessAddr)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("unable to initialize Flow supervisor client")
 	}

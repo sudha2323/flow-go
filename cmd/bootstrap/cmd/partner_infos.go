@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"strings"
 
 	"github.com/onflow/cadence"
@@ -102,7 +103,7 @@ func populatePartnerInfosRun(_ *cobra.Command, _ []string) {
 }
 
 // getFlowClient will validate the flagANNetworkKey and return flow client
-func getFlowClient() *client.Client {
+func getFlowClient() *sdkGrpc.BaseClient {
 	// default to insecure client connection
 	insecureClient := true
 
@@ -129,7 +130,7 @@ func getFlowClient() *client.Client {
 }
 
 // executeGetProposedNodesInfosScript executes the get node info for each ID in the proposed table
-func executeGetProposedNodesInfosScript(ctx context.Context, client *client.Client) (cadence.Value, error) {
+func executeGetProposedNodesInfosScript(ctx context.Context, client *sdkGrpc.BaseClient) (cadence.Value, error) {
 	script, err := common.GetNodeInfoForProposedNodesScript(flagNetworkEnv)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get cadence script: %w", err)

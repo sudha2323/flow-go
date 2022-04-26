@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/spf13/pflag"
-	"google.golang.org/grpc"
 
 	sdk "github.com/onflow/flow-go-sdk"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go-sdk/crypto"
 )
 
@@ -25,7 +25,7 @@ func main() {
 
 	pflag.Parse()
 
-	c, err := client.New(targetAddr, grpc.WithInsecure()) //nolint:staticcheck
+	c, err := sdkGrpc.NewClient(targetAddr)
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +76,7 @@ func main() {
             		}
         		`)).
 				SetGasLimit(100).
-				SetProposalKey(addr, account.ID, nonce).
+				SetProposalKey(addr, account.Index, nonce).
 				SetReferenceBlockID(latest.ID).
 				SetPayer(addr).
 				AddAuthorizer(addr)
