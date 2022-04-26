@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/onflow/flow-go-sdk/access"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -31,7 +32,7 @@ const getSnapshotTimeout = 30 * time.Second
 type GetProtocolSnapshot func(ctx context.Context) (protocol.Snapshot, error)
 
 // GetSnapshot will attempt to get the latest finalized protocol snapshot with the given flow configs
-func GetSnapshot(ctx context.Context, client *client.Client) (*inmem.Snapshot, error) {
+func GetSnapshot(ctx context.Context, client access.Client) (*inmem.Snapshot, error) {
 	ctx, cancel := context.WithTimeout(ctx, getSnapshotTimeout)
 	defer cancel()
 
