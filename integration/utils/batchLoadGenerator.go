@@ -13,7 +13,7 @@ import (
 	"github.com/onflow/flow-go-sdk/templates"
 	"github.com/rs/zerolog"
 
-	"github.com/onflow/flow-go-sdk/client"
+	"github.com/onflow/flow-go-sdk/access"
 	"github.com/onflow/flow-go-sdk/crypto"
 )
 
@@ -52,7 +52,7 @@ func newFlowAccount(i int, address *flowsdk.Address, accountKey *flowsdk.Account
 // by creating many accounts and transfer flow tokens between them
 type BatchLoadGenerator struct {
 	numberOfAccounts     int
-	flowClient           *client.Client
+	flowClient           access.Client
 	serviceAccount       *flowAccount
 	flowTokenAddress     *flowsdk.Address
 	fungibleTokenAddress *flowsdk.Address
@@ -64,7 +64,7 @@ type BatchLoadGenerator struct {
 
 // NewBatchLoadGenerator returns a new LoadGenerator
 // TODO remove servAccPrivKeyHex when we open up account creation to everyone
-func NewBatchLoadGenerator(fclient *client.Client,
+func NewBatchLoadGenerator(fclient access.Client,
 	accessNodeAddress string,
 	servAccPrivKeyHex string,
 	serviceAccountAddress *flowsdk.Address,
@@ -99,7 +99,7 @@ func NewBatchLoadGenerator(fclient *client.Client,
 	return lGen, nil
 }
 
-func loadServiceAccount(flowClient *client.Client,
+func loadServiceAccount(flowClient access.Client,
 	servAccAddress *flowsdk.Address,
 	servAccPrivKeyHex string) (*flowAccount, error) {
 
@@ -125,7 +125,7 @@ func loadServiceAccount(flowClient *client.Client,
 	}, nil
 }
 
-func getBlockIDRef(c *client.Client) (flowsdk.Identifier, error) {
+func getBlockIDRef(c access.Client) (flowsdk.Identifier, error) {
 	ref, err := c.GetLatestBlockHeader(context.Background(), false)
 	if err != nil {
 		return flowsdk.Identifier{}, err
