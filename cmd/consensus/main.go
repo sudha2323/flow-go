@@ -12,7 +12,6 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"github.com/onflow/flow-go-sdk/client"
 	"github.com/onflow/flow-go-sdk/crypto"
 
 	"github.com/onflow/flow-go/cmd"

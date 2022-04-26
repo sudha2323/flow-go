@@ -6,7 +6,6 @@ import (
 	"time"
 
 	flowsdk "github.com/onflow/flow-go-sdk"
-	"github.com/onflow/flow-go-sdk/client"
 )
 
 // block reference is valid for 600 blocks, which is around 10 minutes at 1 second block time.

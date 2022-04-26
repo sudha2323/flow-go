@@ -6,7 +6,6 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/onflow/flow-go-sdk/client"
 	"github.com/onflow/flow-go/model/flow"
 	"github.com/onflow/flow-go/model/flow/filter"
 	"github.com/onflow/flow-go/model/flow/order"

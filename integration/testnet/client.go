@@ -11,7 +11,6 @@ import (
 
 	"github.com/onflow/cadence"
 	sdk "github.com/onflow/flow-go-sdk"
-	"github.com/onflow/flow-go-sdk/client"
 	"github.com/onflow/flow-go-sdk/crypto"
 	sdkcrypto "github.com/onflow/flow-go-sdk/crypto"
 

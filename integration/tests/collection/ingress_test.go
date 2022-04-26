@@ -6,7 +6,7 @@ import (
 	"time"
 
 	sdk "github.com/onflow/flow-go-sdk"
-	sdkclient "github.com/onflow/flow-go-sdk/client"
+	sdkclient "github.com/onflow/flow-go-sdk/access"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"

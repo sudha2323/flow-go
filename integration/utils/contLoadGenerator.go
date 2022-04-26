@@ -15,7 +15,6 @@ import (
 
 	"github.com/onflow/flow-go/module/metrics"
 
-	"github.com/onflow/flow-go-sdk/client"
 	"github.com/onflow/flow-go-sdk/crypto"
 )
 
@@ -464,7 +463,7 @@ func (lg *ContLoadGenerator) sendAddKeyTx(workerID int) {
 
 func (lg *ContLoadGenerator) pushAccountsHappening(workerID int, acc *flowAccount, tx_id string, timeNow time.Time) {
 	lg.log.Trace().Msgf("workerID=%d pushing happening address", workerID)
-	lg.happeningAccounts <- (func() (*flowAccount, string, time.Time) { return acc, tx_id, timeNow })
+	lg.happeningAccounts <- func() (*flowAccount, string, time.Time) { return acc, tx_id, timeNow }
 }
 
 func (lg *ContLoadGenerator) probeAccountsHappening(workerID int) {
