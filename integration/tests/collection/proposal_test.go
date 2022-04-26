@@ -6,14 +6,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
-	"google.golang.org/grpc"
-
+	"github.com/onflow/flow-go-sdk/access"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go/integration/convert"
 	"github.com/onflow/flow-go/integration/testnet"
 	"github.com/onflow/flow-go/model/flow"
 	"github.com/onflow/flow-go/utils/unittest"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 )
 
 func TestMultiCluster(t *testing.T) {
@@ -42,13 +42,13 @@ func (suite *MultiClusterSuite) TestProposal_MultiCluster() {
 	clusters := suite.Clusters()
 
 	// create a client for each node, organized by cluster
-	clientsByCluster := [3][]*client.Client{{}, {}, {}}
+	clientsByCluster := [3][]access.Client{{}, {}, {}}
 	for i := 0; i < nClusters; i++ {
-		forCluster := make([]*client.Client, 0, clusterSize)
+		forCluster := make([]access.Client, 0, clusterSize)
 
 		for j := 0; j < clusterSize; j++ {
 			node := suite.Collector(uint(i), uint(j))
-			client, err := client.New(node.Addr(testnet.ColNodeAPIPort), grpc.WithInsecure()) //nolint:staticcheck
+			client, err := sdkGrpc.NewClient(node.Addr(testnet.ColNodeAPIPort))
 			suite.Require().NoError(err)
 			forCluster = append(forCluster, client)
 		}
