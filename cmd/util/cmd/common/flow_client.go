@@ -6,6 +6,7 @@ import (
 
 	"google.golang.org/grpc"
 
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go/model/flow"
 	"github.com/onflow/flow-go/model/flow/filter"
 	"github.com/onflow/flow-go/model/flow/order"
@@ -45,7 +46,7 @@ func NewFlowClientConfig(accessAddress, accessApiNodePubKey string, accessNodeID
 }
 
 // FlowClient will return a secure or insecure flow client depending on *FlowClientConfig.Insecure
-func FlowClient(conf *FlowClientConfig) (*client.Client, error) {
+func FlowClient(conf *FlowClientConfig) (*sdkGrpc.BaseClient, error) {
 	if conf.Insecure {
 		return insecureFlowClient(conf.AccessAddress)
 	}
@@ -54,14 +55,14 @@ func FlowClient(conf *FlowClientConfig) (*client.Client, error) {
 }
 
 // secureFlowClient creates a flow client with secured GRPC connection
-func secureFlowClient(accessAddress, accessApiNodePubKey string) (*client.Client, error) {
+func secureFlowClient(accessAddress, accessApiNodePubKey string) (*sdkGrpc.BaseClient, error) {
 	dialOpts, err := grpcutils.SecureGRPCDialOpt(accessApiNodePubKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create flow client with secured GRPC conn could get secured GRPC dial options %w", err)
 	}
 
 	// create flow client
-	flowClient, err := client.New(accessAddress, dialOpts)
+	flowClient, err := sdkGrpc.NewBaseClient(accessAddress, dialOpts)
 	if err != nil {
 		return nil, err
 	}
@@ -70,9 +71,9 @@ func secureFlowClient(accessAddress, accessApiNodePubKey string) (*client.Client
 }
 
 // insecureFlowClient creates flow client with insecure GRPC connection
-func insecureFlowClient(accessAddress string) (*client.Client, error) {
+func insecureFlowClient(accessAddress string) (*sdkGrpc.BaseClient, error) {
 	// create flow client
-	flowClient, err := client.New(accessAddress, grpc.WithInsecure()) //nolint:staticcheck
+	flowClient, err := sdkGrpc.NewBaseClient(accessAddress, grpc.WithInsecure()) //nolint:staticcheck
 	if err != nil {
 		return nil, fmt.Errorf("failed to create flow client %w", err)
 	}
