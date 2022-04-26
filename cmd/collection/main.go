@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"time"
 
 	"github.com/spf13/pflag"
@@ -11,7 +12,6 @@ import (
 	modulecompliance "github.com/onflow/flow-go/module/compliance"
 	"github.com/onflow/flow-go/module/mempool/herocache"
 
-	"github.com/onflow/flow-go-sdk/access"
 	sdkcrypto "github.com/onflow/flow-go-sdk/crypto"
 
 	"github.com/onflow/flow-go/cmd"
@@ -532,7 +532,7 @@ func main() {
 }
 
 // createQCContractClient creates QC contract client
-func createQCContractClient(node *cmd.NodeConfig, machineAccountInfo *bootstrap.NodeMachineAccountInfo, flowClient access.Client, anID flow.Identifier) (module.QCContractClient, error) {
+func createQCContractClient(node *cmd.NodeConfig, machineAccountInfo *bootstrap.NodeMachineAccountInfo, flowClient *sdkGrpc.BaseClient, anID flow.Identifier) (module.QCContractClient, error) {
 
 	var qcContractClient module.QCContractClient
 

@@ -17,12 +17,13 @@ import (
 
 	"github.com/onflow/cadence"
 	flowsdk "github.com/onflow/flow-go-sdk"
+	"github.com/onflow/flow-go-sdk/access"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/onflow/flow-go-sdk/crypto"
 	"github.com/onflow/flow-go-sdk/templates"
 
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"google.golang.org/grpc"
 
 	"github.com/onflow/flow-go/integration/tests/execution"
 	"github.com/onflow/flow-go/integration/tests/lib"
@@ -68,7 +69,7 @@ func TestTransactionsPerSecondBenchmark(t *testing.T) {
 
 type TransactionsPerSecondSuite struct {
 	execution.Suite
-	flowClient      *client.Client
+	flowClient      access.Client
 	ref             *flowsdk.BlockHeader
 	accounts        map[flowsdk.Address]*flowsdk.AccountKey
 	privateKeys     map[string][]byte
@@ -140,7 +141,7 @@ func (gs *TransactionsPerSecondSuite) TestTransactionsPerSecond() {
 	gs.signers = map[flowsdk.Address]crypto.InMemorySigner{}
 
 	// Setup the client, not using the suite to generate client since we may want to call external testnets
-	flowClient, err := client.New(gs.accessAddr, grpc.WithInsecure()) //nolint:staticcheck
+	flowClient, err := sdkGrpc.NewClient(gs.accessAddr)
 	require.NoError(gs.T(), err, "could not get client")
 	gs.flowClient = flowClient
 
@@ -305,7 +306,7 @@ func (gs *TransactionsPerSecondSuite) CreateAccountAndTransfer(keyIndex int) (fl
 }
 
 // Transfer10Tokens transfers 10 tokens
-func (gs *TransactionsPerSecondSuite) Transfer10Tokens(flowClient *client.Client, fromAddr, toAddr flowsdk.Address, fromKey *flowsdk.AccountKey) {
+func (gs *TransactionsPerSecondSuite) Transfer10Tokens(flowClient access.Client, fromAddr, toAddr flowsdk.Address, fromKey *flowsdk.AccountKey) {
 	ctx := context.Background()
 
 	// Transfer 10 tokens
@@ -367,7 +368,7 @@ func DownloadFile(url string) ([]byte, error) {
 	return fileCache[url], err
 }
 
-func ServiceAccountWithKey(flowClient *client.Client, key string) (flowsdk.Address, *flowsdk.AccountKey, crypto.Signer) {
+func ServiceAccountWithKey(flowClient access.Client, key string) (flowsdk.Address, *flowsdk.AccountKey, crypto.Signer) {
 	addr := flowsdk.ServiceAddress(flowsdk.Testnet)
 
 	acc, err := flowClient.GetAccount(context.Background(), addr)
@@ -387,7 +388,7 @@ func ServiceAccountWithKey(flowClient *client.Client, key string) (flowsdk.Addre
 	return addr, accountKey, signer
 }
 
-func WaitForFinalized(ctx context.Context, c *client.Client, id flowsdk.Identifier) *flowsdk.TransactionResult {
+func WaitForFinalized(ctx context.Context, c access.Client, id flowsdk.Identifier) *flowsdk.TransactionResult {
 	result, err := c.GetTransactionResult(ctx, id)
 	handle(err)
 
@@ -439,7 +440,7 @@ func bytesToCadenceArray(b []byte) cadence.Array {
 	return cadence.NewArray(values)
 }
 
-func (gs *TransactionsPerSecondSuite) AddKeys(flowClient *client.Client) {
+func (gs *TransactionsPerSecondSuite) AddKeys(flowClient access.Client) {
 	ctx := context.Background()
 
 	gs.sequenceNumbers = make([]uint64, TotalAccounts)

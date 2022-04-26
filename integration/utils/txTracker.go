@@ -2,11 +2,12 @@ package utils
 
 import (
 	"context"
+	"github.com/onflow/flow-go-sdk/access"
 	"time"
 
 	flowsdk "github.com/onflow/flow-go-sdk"
+	sdkGrpc "github.com/onflow/flow-go-sdk/access/grpc"
 	"github.com/rs/zerolog"
-	"google.golang.org/grpc"
 )
 
 type txInFlight struct {
@@ -50,7 +51,7 @@ func NewTxTracker(
 		done:          make(chan bool, numberOfWorkers),
 		stats:         stats}
 	for i := 0; i < numberOfWorkers; i++ {
-		fclient, err := client.New(accessNodeAddress, grpc.WithInsecure()) //nolint:staticcheck
+		fclient, err := sdkGrpc.NewClient(accessNodeAddress)
 		if err != nil {
 			return nil, err
 		}
@@ -95,7 +96,7 @@ func (txt *TxTracker) Stop() {
 	close(txt.txs)
 }
 
-func statusWorker(log zerolog.Logger, workerID int, txs chan *txInFlight, done <-chan bool, fclient *client.Client, stats *TxStatsTracker, sleepAfterOp time.Duration) {
+func statusWorker(log zerolog.Logger, workerID int, txs chan *txInFlight, done <-chan bool, fclient access.Client, stats *TxStatsTracker, sleepAfterOp time.Duration) {
 	log.Debug().Int("worker_id", workerID).Msg("worker started")
 
 	clientContErrorCounter := 0
