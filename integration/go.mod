@@ -18,13 +18,13 @@ require (
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
-	github.com/onflow/cadence v0.23.3
+	github.com/onflow/cadence v0.23.4
 	github.com/onflow/flow-core-contracts/lib/go/contracts v0.11.0
 	github.com/onflow/flow-core-contracts/lib/go/templates v0.11.0
 	github.com/onflow/flow-emulator v0.20.3
 	github.com/onflow/flow-ft/lib/go/templates v0.2.0
-	github.com/onflow/flow-go v0.18.0 // replaced by version on-disk
-	github.com/onflow/flow-go-sdk v0.24.0
+	github.com/onflow/flow-go v0.24.7 // replaced by version on-disk
+	github.com/onflow/flow-go-sdk v0.24.1-0.20220425110326-2f4028619c3f
 	github.com/onflow/flow-go/crypto v0.24.3
 	github.com/onflow/flow/protobuf/go/flow v0.2.5
 	github.com/plus3it/gorecurcopy v0.0.1
